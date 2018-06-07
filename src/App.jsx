@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
-import axios from 'axios'
 import { Grid, Row } from 'react-bootstrap'
+import { connect } from 'react-redux'
 
 import AppForm from './components/AppForm'
 import LoaderModal from './components/LoaderModal'
 import ToastMessage from './components/ToastMessage'
+
+import actions from './redux/actions'
 
 import './css/bootstrap.min.css'
 import './css/main.css'
@@ -16,13 +18,8 @@ class App extends PureComponent {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.handleDismissToast = this.handleDismissToast.bind(this)
     this.state = {
-      submitting: false,
       toastVisible: false
     }
-  }
-
-  timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   handleLoaderClose() {
@@ -34,19 +31,13 @@ class App extends PureComponent {
   }
 
   handleFormSubmit(inputs) {
-    this.setState({ submitting: true }, async ()=>{
-      const config = {
-        method: 'post',
-        url: 'http://localhost:3001/posts',
-        data: inputs
-      }
-      await this.timeout(3000)
-      const { status, statusText } = await axios(config)
-    })
+    const { dispatch } = this.props
+    dispatch(actions.SubmitForm(inputs))
   }
 
   render() {
-    const { submitting, toastVisible } = this.state
+    const { toastVisible } = this.state
+    const { processing, message } = this.props
     return (
       <div className='App'>
         <Grid>
@@ -54,13 +45,13 @@ class App extends PureComponent {
             <AppForm onFormSubmit={this.handleFormSubmit} />
           </Row>
           <Row>
-            { toastVisible && <ToastMessage onDismiss={this.handleDismissToast} /> }
+            { toastVisible && <ToastMessage onDismiss={this.handleDismissToast} message={message} /> }
           </Row>
         </Grid>
-        <LoaderModal show={submitting} onHide={this.handleLoaderClose} />
+        <LoaderModal show={processing} onHide={this.handleLoaderClose} />
       </div>
     )
   }
 }
 
-export default App
+export default connect(state=>state)(App)
