@@ -10,7 +10,7 @@ function *SubmitForm({ payload: inputs }) {
       data: inputs
     }
     yield put({ type: 'START_PROCESS' })
-    yield delay(5000)
+    yield delay(3000)
     const { status, statusText } = yield axios(config)
     yield all([
       yield put({ type: 'FORM_SUBMIT', payload: { status, data: statusText } }),
