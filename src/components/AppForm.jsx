@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import Validator from 'validator'
+import _ from 'lodash'
 
 import { Col, Form, FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap'
 
@@ -18,6 +19,7 @@ class AppForm extends PureComponent {
     this.state = {
       inputs: { ...empty },
       errors: {},
+      isValid: false,
       resolved: false
     }
   }
@@ -27,7 +29,8 @@ class AppForm extends PureComponent {
     if (resolved && !prevState.resolved) {
       return {
         resolved,
-        inputs: { ...empty }
+        inputs: { ...empty },
+        isValid: false
       }
     }
     return null
@@ -40,22 +43,54 @@ class AppForm extends PureComponent {
 
     const inputs = { ...prevInputs, [id]: value }
     let errors = { ...prevErrors }
+    errors = this.validateInput(inputs, errors, id)
 
-    if (value.length <= 0) {
-      errors = { ...prevErrors, [id]: 'error' }
+    this.setState({ inputs, errors })
+  }
+
+  checkErrors(id, value, errors) {
+    if (Validator.isEmpty(String(value))) {
+      errors = errors[id] = 'error'
     } else if (id === 'email' && !Validator.isEmail(value)) {
-      errors = { ...prevErrors, [id]: 'error' }
+      errors = errors[id] = 'error'
     } else {
       delete errors[id]
     }
+  }
 
-    this.setState({ inputs, errors })
+  validateInput(inputs, errors, id) {
+    for (const key in inputs) {
+      if (key === id) {
+        this.checkErrors(id, inputs[id], errors)
+      }
+    }
+    return errors
+  }
+
+  validateForm(inputs) {
+    let errors = {}
+    for (const id in inputs) {
+      this.checkErrors(id, inputs[id], errors)
+    }
+    return {
+      errors,
+      isValid: _.isEmpty(errors)
+    }
+  }
+
+  isValid() {
+    const { inputs } = this.state
+    const { isValid, errors } = this.validateForm(inputs)
+    this.setState({ errors })
+    return isValid
   }
 
   handleSubmit() {
     const { inputs } = this.state
     const { onFormSubmit } = this.props
-    onFormSubmit(inputs)
+    if (this.isValid()) {
+      onFormSubmit(inputs)
+    }
   }
 
   render() {

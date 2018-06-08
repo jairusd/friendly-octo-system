@@ -11,7 +11,7 @@ When the user submits the form, sending of the data should be simulated with a t
 
 Please add a test that checks if the form submits its data when the submit button gets clicked.
 
-You are totally free in deciding how you build this. If anything is unclear to you, just make an assumption and proceed with what you think makes sense. 
+You are totally free in deciding how you build this. If anything is unclear to you, just make an assumption and proceed with what you think makes sense.
 
 #### Setup
 `yarn`
@@ -21,3 +21,22 @@ You are totally free in deciding how you build this. If anything is unclear to y
 
 #### Run tests
 `yarn test`
+
+## Built with these technology stack
+
+* React
+* React-Bootstrap
+* Redux
+* Redux Saga
+* JSON Server
+* Axios
+* Eslint
+* Concurrently
+* Lodash
+* Validator
+
+## Running on Development Mode
+
+```
+yarn run development
+```
