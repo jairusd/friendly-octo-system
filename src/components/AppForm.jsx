@@ -2,20 +2,31 @@ import React, { PureComponent } from 'react'
 
 import { Col, Form, FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap'
 
+const empty = {
+  name: '',
+  email: '',
+  message: ''
+}
+
 class AppForm extends PureComponent {
   constructor() {
     super()
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 
-    this.empty = {
-      name: '',
-      email: '',
-      message: ''
-    }
     this.state = {
-      inputs: { ...this.empty }
+      inputs: { ...empty }
     }
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    const { resolved } = nextProps
+    if (resolved) {
+      return {
+        inputs: { ...empty }
+      }
+    }
+    return null
   }
 
   handleInputChange(e) {

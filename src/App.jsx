@@ -22,6 +22,16 @@ class App extends PureComponent {
     }
   }
 
+  static getDerivedStateFromProps(nextProps) {
+    const { toastVisible, message } = nextProps
+    if (toastVisible) {
+      return {
+        toastVisible, message
+      }
+    }
+    return null
+  }
+
   handleLoaderClose() {
     this.setState({ submitting: false })
   }
@@ -36,13 +46,13 @@ class App extends PureComponent {
   }
 
   render() {
-    const { toastVisible } = this.state
-    const { processing, message } = this.props
+    const { toastVisible, message } = this.state
+    const { processing } = this.props
     return (
       <div className='App'>
         <Grid>
           <Row>
-            <AppForm onFormSubmit={this.handleFormSubmit} />
+            <AppForm onFormSubmit={this.handleFormSubmit} resolved={toastVisible} />
           </Row>
           <Row>
             { toastVisible && <ToastMessage onDismiss={this.handleDismissToast} message={message} /> }
