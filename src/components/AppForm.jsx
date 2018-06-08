@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import Validator from 'validator'
 
 import { Col, Form, FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap'
 
@@ -15,14 +16,17 @@ class AppForm extends PureComponent {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      inputs: { ...empty }
+      inputs: { ...empty },
+      errors: {},
+      resolved: false
     }
   }
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { resolved } = nextProps
-    if (resolved) {
+    if (resolved && !prevState.resolved) {
       return {
+        resolved,
         inputs: { ...empty }
       }
     }
@@ -30,11 +34,22 @@ class AppForm extends PureComponent {
   }
 
   handleInputChange(e) {
+    const { inputs: prevInputs, errors: prevErrors } = this.state
     const value = e.target.value
     const id = e.target.id
-    const { inputs: prevInputs } = this.state
+
     const inputs = { ...prevInputs, [id]: value }
-    this.setState({ inputs })
+    let errors = { ...prevErrors }
+
+    if (value.length <= 0) {
+      errors = { ...prevErrors, [id]: 'error' }
+    } else if (id === 'email' && !Validator.isEmail(value)) {
+      errors = { ...prevErrors, [id]: 'error' }
+    } else {
+      delete errors[id]
+    }
+
+    this.setState({ inputs, errors })
   }
 
   handleSubmit() {
@@ -44,46 +59,46 @@ class AppForm extends PureComponent {
   }
 
   render() {
-    const { name, email, message } = this.state
+    const { inputs, errors } = this.state
     return (
       <div className='app_form'>
         <Form horizontal>
-          <FormGroup controlId='name'>
+          <FormGroup controlId='name' validationState={errors.name}>
             <Col componentClass={ControlLabel} sm={2}>
               Name
             </Col>
             <Col sm={10}>
               <FormControl
                 type='text'
-                placeholder='Your Complete Name'
+                placeholder='required'
                 onChange={this.handleInputChange}
-                value={name} />
+                value={inputs.name} />
             </Col>
           </FormGroup>
 
-          <FormGroup controlId='email'>
+          <FormGroup controlId='email' validationState={errors.email}>
             <Col componentClass={ControlLabel} sm={2}>
               Email
             </Col>
             <Col sm={10}>
               <FormControl
                 type='email'
-                placeholder='Your Email Address'
+                placeholder='required'
                 onChange={this.handleInputChange}
-                value={email} />
+                value={inputs.email} />
             </Col>
           </FormGroup>
 
-          <FormGroup controlId='message'>
+          <FormGroup controlId='message' validationState={errors.message}>
             <Col componentClass={ControlLabel} sm={2}>
               Message
             </Col>
             <Col sm={10}>
               <FormControl
                 componentClass='textarea'
-                placeholder='Your Message'
+                placeholder='required'
                 onChange={this.handleInputChange}
-                value={message} />
+                value={inputs.message} />
             </Col>
           </FormGroup>
 
