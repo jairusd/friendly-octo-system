@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Col, FormGroup, Alert, Button } from 'react-bootstrap'
 
-const LoaderModal = ({ onDismiss, message: { data, status } }) => (
+const ToastMessage = ({ onDismiss, message: { data, status } }) => (
   <Col smOffset={2} sm={10}>
     <FormGroup controlId='message'>
       <Alert bsStyle={ status === 201 ? 'success' : 'danger' } onDismiss={onDismiss}>
@@ -15,5 +16,14 @@ const LoaderModal = ({ onDismiss, message: { data, status } }) => (
   </Col>
 )
 
-export default LoaderModal
+export default ToastMessage
+
+ToastMessage.propTypes = {
+  onDismiss: PropTypes.func.isRequired,
+  message: PropTypes.shape({
+    data: PropTypes.string,
+    status: PropTypes.number
+  })
+}
+
 

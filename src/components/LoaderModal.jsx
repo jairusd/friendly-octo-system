@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Modal } from 'react-bootstrap'
 
 const LoaderModal = ({ onHide, show }) => (
@@ -17,3 +18,9 @@ const LoaderModal = ({ onHide, show }) => (
 )
 
 export default LoaderModal
+
+LoaderModal.propTypes = {
+  onHide: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
+}
+

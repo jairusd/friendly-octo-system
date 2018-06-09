@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import Validator from 'validator'
 import _ from 'lodash'
 
@@ -149,3 +150,8 @@ class AppForm extends PureComponent {
 }
 
 export default AppForm
+
+AppForm.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired,
+  resolved: PropTypes.bool.isRequired
+}

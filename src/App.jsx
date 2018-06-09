@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { Grid, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import AppForm from './components/AppForm'
 import LoaderModal from './components/LoaderModal'
 import ToastMessage from './components/ToastMessage'
+import WithErrorBoundary from './components/WithErrorBoundary'
 
 import actions from './redux/actions'
 
@@ -64,4 +66,14 @@ class App extends PureComponent {
   }
 }
 
-export default connect(state=>state)(App)
+export default WithErrorBoundary(connect(state=>state)(App))
+
+App.propTypes = {
+  processing: PropTypes.bool.isRequired,
+  toastVisible: PropTypes.bool.isRequired,
+  message: PropTypes.shape({
+    data: PropTypes.string,
+    status: PropTypes.number
+  })
+}
+
