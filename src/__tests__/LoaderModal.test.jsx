@@ -4,5 +4,5 @@ import LoaderModal from '../components/LoaderModal'
 
 it('renders without crashing', () => {
   const div = document.createElement('div')
-  render(<LoaderModal onHide={()=>{}} show={false} />, div)
+  render(<LoaderModal onHide={() => ({})} show={false} />, div)
 })
