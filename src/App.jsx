@@ -16,9 +16,6 @@ import './css/main.css'
 class App extends PureComponent {
   constructor() {
     super()
-    this.handleLoaderClose = this.handleLoaderClose.bind(this)
-    this.handleFormSubmit = this.handleFormSubmit.bind(this)
-    this.handleDismissToast = this.handleDismissToast.bind(this)
     this.state = {
       toastVisible: false
     }
@@ -34,15 +31,15 @@ class App extends PureComponent {
     return null
   }
 
-  handleLoaderClose() {
+  handleLoaderClose = () => {
     this.setState({ submitting: false })
   }
 
-  handleDismissToast() {
+  handleDismissToast = () => {
     this.setState({ toastVisible: false })
   }
 
-  handleFormSubmit(inputs) {
+  handleFormSubmit = (inputs) => {
     const { dispatch } = this.props
     dispatch(actions.SubmitForm(inputs))
   }
