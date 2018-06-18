@@ -4,8 +4,8 @@ import { Col, FormGroup, Alert, Button } from 'react-bootstrap'
 
 const ToastMessage = ({ onDismiss, message: { data, status } }) => (
   <Col smOffset={2} sm={10}>
-    <FormGroup controlId='message'>
-      <Alert bsStyle={ status === 201 ? 'success' : 'danger' } onDismiss={onDismiss}>
+    <FormGroup controlId="message">
+      <Alert bsStyle={status === 201 ? 'success' : 'danger'} onDismiss={onDismiss}>
         <h4>Success</h4>
         <p>
           { data === 'Created' ? 'Message successfully submitted' : data }
@@ -25,5 +25,4 @@ ToastMessage.propTypes = {
     status: PropTypes.number
   })
 }
-
 

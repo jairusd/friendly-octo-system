@@ -14,13 +14,6 @@ import './css/bootstrap.min.css'
 import './css/main.css'
 
 class App extends PureComponent {
-  constructor() {
-    super()
-    this.state = {
-      toastVisible: false
-    }
-  }
-
   static getDerivedStateFromProps(nextProps) {
     const { toastVisible, message } = nextProps
     if (toastVisible) {
@@ -31,8 +24,11 @@ class App extends PureComponent {
     return null
   }
 
-  handleLoaderClose = () => {
-    this.setState({ submitting: false })
+  constructor() {
+    super()
+    this.state = {
+      toastVisible: false
+    }
   }
 
   handleDismissToast = () => {
@@ -48,13 +44,18 @@ class App extends PureComponent {
     const { toastVisible, message } = this.state
     const { processing } = this.props
     return (
-      <div className='App'>
+      <div className="App">
         <Grid>
           <Row>
             <AppForm onFormSubmit={this.handleFormSubmit} resolved={toastVisible} />
           </Row>
           <Row>
-            { toastVisible && <ToastMessage onDismiss={this.handleDismissToast} message={message} /> }
+            { toastVisible &&
+              <ToastMessage
+                onDismiss={this.handleDismissToast}
+                message={message}
+              />
+            }
           </Row>
         </Grid>
         <LoaderModal show={processing} onHide={this.handleLoaderClose} />
@@ -63,14 +64,9 @@ class App extends PureComponent {
   }
 }
 
-export default WithErrorBoundary(connect(state=>state)(App))
+export default WithErrorBoundary(connect(state => state)(App))
 
 App.propTypes = {
-  processing: PropTypes.bool.isRequired,
-  toastVisible: PropTypes.bool.isRequired,
-  message: PropTypes.shape({
-    data: PropTypes.string,
-    status: PropTypes.number
-  })
+  processing: PropTypes.bool.isRequired
 }
 

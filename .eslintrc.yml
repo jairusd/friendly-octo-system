@@ -13,7 +13,7 @@ rules:
   func-names: 0
   generator-star-spacing: [0, {before: true, after: false}]
   guard-for-in: 0
-  linebreak-style: [1, windows]
+  linebreak-style: [2, unix]
   no-console: off
   no-param-reassign: [1, { props: true, ignorePropertyModificationsFor: [errors, columnObject] }]
   no-unused-vars: [1, { args: none }]
